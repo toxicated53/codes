@@ -1,0 +1,55 @@
+sign in to console 
+-> for mfa use the authenticator app
+
+go to ec2 instance
+
+give name 
+select m3.micro 
+generate a rsa key pair and give the name to it
+allow http and ssh 
+launch instance
+
+=====================================================================
+
+
+ONCE instance is launched take the ip address and type the follwoing command in the terminal 
+
+make the .pem file to read only to yourself
+
+chmod 400 mykey.pem
+
+ssh -i key_name.pem ubuntu@ip_address of ec2 instance
+
+now you will be inside the ec2 instance
+
+=====================================================================
+
+for starters try echo "hello world"
+
+then create a file using nano editor and type hello world and execute it in python
+
+=====================================================================
+
+to host it 
+
+sudo yum update -y
+
+sudo yum install httpd -y
+
+sudo systemctl start httpd
+
+sudo systemctl enable httpd
+====================================================================
+
+now type 
+http://ip_address  in your browser and you will see it 
+
+type sudo nano var/www/html/index.html
+
+and type 
+<h1> hello world </h1> 
+
+and refresh the page
+now you will see the hello world sign
+
+

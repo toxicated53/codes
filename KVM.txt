@@ -1,0 +1,58 @@
+egrep -c '(vmx|svm)' /proc/cpuinfo                   ==> check fo cpu support
+
+sudo apt update
+sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virt-manager -y      ==> for ubuntu 
+
+
+sudo systemctl enable --now libvirtd    ===> start the libvirt service
+
+
+systemctl status libvirtd    ===> check for the status
+
+
+sudo usermod -aG libvirt $USER
+sudo usermod -aG kvm $USER          
+
+
+virsh list --all   or    lsmod | grep kvm
+
+
+virt-manager       ===> This will open the virt-manager
+
+
+=================================================================================================================
+
+
+
+install fedora iso image
+
+inside virt-manager 
+click on create
+iso file
+browse it 
+default settings 
+install it
+
+
+==================================================================================================================
+
+
+if python is missing in fedora 
+
+type 
+sudo dnf install python3-pip
+
+pip3 install requests
+
+pip3 install flask
+
+python3 -m venv myenv
+
+source myenv/bin/activate
+
+pip install requests
+
+==================================================================================================================
+
+
+

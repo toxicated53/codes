@@ -1,0 +1,181 @@
+login to salesforce 
+
+go to developer console 
+everything will be already present just run it and show 
+
+if not then 
+
+go to settings -> setup -> object manager 
+
+create a custom object with name 
+
+=======================================================================
+
+once the object is created go to object manager and click on your specified object 
+
+now click on fields and relationships and click on new
+
+specify the datatypes and and name and cleick on next next next and save
+
+once all the fields and relationships have been set 
+go to developer console and open new apex class file
+
+give the name as 
+EmployeeController
+
+and paste this code
+
+public class EmployeeController {
+
+    public Employee__c newEmployee {get; set;}
+    public List<Employee__c> employeeList {get; set;}
+
+    // Constructor
+    public EmployeeController() {
+
+        newEmployee = new Employee__c();
+
+        employeeList = [SELECT Id,
+                        Name,
+                        Employee_ID__c,
+                        Employee_Email__c,
+                        Employee_Phone__c
+                        FROM Employee__c];
+    }
+
+    // Save Employee
+    public PageReference saveEmployee() {
+
+    insert newEmployee;
+
+    // Reset form
+    newEmployee = new Employee__c();
+
+    // Refresh table
+    employeeList = [SELECT Id,
+                    Name,
+                    Employee_ID__c,
+                    Employee_Email__c,
+                    Employee_Phone__c
+                    FROM Employee__c];
+
+    return null;
+	}	
+
+    // Delete Employee
+    public PageReference deleteEmployee() {
+
+    String empId = ApexPages.currentPage()
+                            .getParameters()
+                            .get('id');
+
+    Employee__c e = [SELECT Id
+                     FROM Employee__c
+                     WHERE Id = :empId];
+
+    delete e;
+
+    // Refresh table
+    employeeList = [SELECT Id,
+                    Name,
+                    Employee_ID__c,
+                    Employee_Email__c,
+                    Employee_Phone__c
+                    FROM Employee__c];
+
+    return null;
+	}
+}
+
+
+============================================================================================
+
+now open another new -> visual salesforce page 
+
+and paste this code 
+
+<apex:page controller="EmployeeController">
+
+    <apex:form >
+
+        <h1>Employee Management System</h1>
+
+        <!-- Employee Form -->
+
+        <apex:pageBlock >
+
+            <apex:pageBlockSection columns="1">
+
+                <apex:inputField value="{!newEmployee.Name}"/>
+
+                <apex:inputField value="{!newEmployee.Employee_ID__c}"/>
+
+                <apex:inputField value="{!newEmployee.Employee_Email__c}"/>
+
+                <apex:inputField value="{!newEmployee.Employee_Phone__c}"/>
+
+            </apex:pageBlockSection>
+
+            <apex:commandButton value="Save Employee"
+                                action="{!saveEmployee}"/>
+
+        </apex:pageBlock>
+
+        <br/>
+
+        <!-- Employee Records Table -->
+
+        <apex:pageBlock title="Employee Records">
+
+            <apex:pageBlockTable value="{!employeeList}" var="e">
+
+                <apex:column value="{!e.Name}"
+                             headerValue="Employee Name"/>
+
+                <apex:column value="{!e.Employee_ID__c}"
+                             headerValue="Employee ID"/>
+
+                <apex:column value="{!e.Employee_Email__c}"
+                             headerValue="Employee Email"/>
+
+                <apex:column value="{!e.Employee_Phone__c}"
+                             headerValue="Employee Phone"/>
+
+                <apex:column headerValue="Action">
+
+                    <apex:commandLink value="Delete"
+                                      action="{!deleteEmployee}">
+
+                        <apex:param name="id"
+                                    value="{!e.Id}"/>
+
+                    </apex:commandLink>
+
+                </apex:column>
+
+            </apex:pageBlockTable>
+
+        </apex:pageBlock>
+
+    </apex:form>
+
+</apex:page>
+
+
+==================================================================================================
+
+also in query editor 
+
+SELECT Id,
+       Name,
+       Employee_ID__c,
+       Employee_Email__c,
+       Employee_Phone__c
+FROM Employee__c
+
+paste that query to get everything from database.
+
+==================================================================================================
+
+
+
