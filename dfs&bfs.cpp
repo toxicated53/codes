@@ -4,24 +4,27 @@
 
 using namespace std;
 
+vector<int> graph[10];
+bool visited[10];
+
 // DFS Function
-void dfs(int node, vector<vector<int>>& adj, vector<bool>& visited)
+void dfs(int node)
 {
     visited[node] = true;
 
     cout << node << " ";
 
-    for(int neighbor : adj[node])
+    for(int neighbour : graph[node])
     {
-        if(!visited[neighbor])
+        if(!visited[neighbour])
         {
-            dfs(neighbor, adj, visited);
+            dfs(neighbour);
         }
     }
 }
 
 // BFS Function
-void bfs(int start, vector<vector<int>>& adj, vector<bool>& visited)
+void bfs(int start)
 {
     queue<int> q;
 
@@ -37,13 +40,13 @@ void bfs(int start, vector<vector<int>>& adj, vector<bool>& visited)
 
         cout << node << " ";
 
-        for(int neighbor : adj[node])
+        for(int neighbour : graph[node])
         {
-            if(!visited[neighbor])
+            if(!visited[neighbour])
             {
-                visited[neighbor] = true;
+                visited[neighbour] = true;
 
-                q.push(neighbor);
+                q.push(neighbour);
             }
         }
     }
@@ -51,26 +54,24 @@ void bfs(int start, vector<vector<int>>& adj, vector<bool>& visited)
 
 int main()
 {
-    int n, m;
+    int vertices, edges;
 
     cout << "Enter number of vertices: ";
-    cin >> n;
+    cin >> vertices;
 
     cout << "Enter number of edges: ";
-    cin >> m;
+    cin >> edges;
 
-    vector<vector<int>> adj(n);
+    cout << "Enter edges:\n";
 
-    cout << "Enter edges (u v):" << endl;
-
-    for(int i = 0; i < m; i++)
+    for(int i = 0; i < edges; i++)
     {
         int u, v;
 
         cin >> u >> v;
 
-        adj[u].push_back(v);
-        adj[v].push_back(u); // Undirected graph
+        graph[u].push_back(v);
+        graph[v].push_back(u);
     }
 
     int start;
@@ -79,18 +80,20 @@ int main()
     cin >> start;
 
     // DFS
-    vector<bool> visited1(n, false);
-
     cout << "\nDFS Traversal: ";
 
-    dfs(start, adj, visited1);
+    dfs(start);
+
+    // Reset visited array
+    for(int i = 0; i < 10; i++)
+    {
+        visited[i] = false;
+    }
 
     // BFS
-    vector<bool> visited2(n, false);
-
     cout << "\nBFS Traversal: ";
 
-    bfs(start, adj, visited2);
+    bfs(start);
 
     return 0;
 }
