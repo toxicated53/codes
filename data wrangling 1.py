@@ -1,79 +1,42 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import LabelEncoder
 
-# -----------------------------------
-# 1. Import Required Libraries
-# -----------------------------------
-print("Libraries Imported Successfully")
+# Load Dataset
+df = pd.read_csv("Titanic-Dataset.csv")
 
-# -----------------------------------
-# 2. Load Open Source Dataset
-# Dataset: Titanic Dataset
-# Source:
-# https://www.kaggle.com/c/titanic
-# -----------------------------------
-
-import seaborn as sns
-
-df = sns.load_dataset('titanic')# -----------------------------------
-# 3. Load Dataset into DataFrame
-# -----------------------------------
-print("\nFirst 5 Rows of Dataset:\n")
+# Display First Rows
 print(df.head())
 
-# -----------------------------------
-# 4. Data Preprocessing
-# -----------------------------------
-
-# Check dimensions
-print("\nDimensions of Dataset:")
-print(df.shape)
-
-# Dataset Information
-print("\nDataset Information:\n")
-print(df.info())
-
 # Statistical Summary
-print("\nStatistical Summary:\n")
 print(df.describe())
 
-# Check Missing Values
-print("\nMissing Values:\n")
+# Missing Values
 print(df.isnull().sum())
 
-# Variable Types
-print("\nData Types:\n")
+# Dataset Dimensions
+print(df.shape)
+
+# Datatypes
 print(df.dtypes)
 
-# -----------------------------------
-# 5. Data Formatting and Normalization
-# -----------------------------------
+# Dataset Information
+print(df.info())
 
-# Convert age to float type
-df['age'] = df['age'].astype(float)
+# Fill Missing Values
+df['Age'] = df['Age'].fillna(df['Age'].mean())
 
-df['age'] = df['age'].fillna(df['age'].mean())
+# Convert Datatype
+df['Age'] = df['Age'].astype(int)
 
-df['age_normalized'] = (
-    (df['age'] - df['age'].min()) /
-    (df['age'].max() - df['age'].min())
-)
+# Normalize Fare Column
+df['Fare'] = (df['Fare'] - df['Fare'].min()) / \
+             (df['Fare'].max() - df['Fare'].min())
 
-print("\nNormalized Age Column:\n")
-print(df[['age', 'age_normalized']].head())
+# Convert Categorical to Numerical
+df['Sex'] = df['Sex'].map({
+    'male': 0,
+    'female': 1
+})
 
-# -----------------------------------
-# 6. Convert Categorical to Numeric
-# -----------------------------------
-
-label_encoder = LabelEncoder()
-
-df['sex'] = label_encoder.fit_transform(df['sex'])
-
-print("\nCategorical Variable Converted:\n")
-print(df[['sex']].head())
-
-# Final Dataset
-print("\nFinal Dataset:\n")
+# Final Output
 print(df.head())
